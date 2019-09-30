@@ -1,0 +1,59 @@
+token = "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+print("Let's go!")
+import telepot
+import weather
+import requests
+#telepot.api.set_proxy("http://202.158.49.140")
+#print("Proxy is working!")
+bot = telepot.Bot(token)
+print("Bot is ready to work!")
+chat_id = xxxxxxxxxxx
+bot.sendMessage(chat_id, "Привет! Введи слово и я покажу тебе сколько в нём согласных и гласных!")
+
+def reply(text, chat_id):
+    textt = list(text.lower())
+    cons_in_text = [] #согласные
+    vows_in_text = [] #гласные
+    other_in_text = []
+    list_of_cons = ["б", "в", "г", "д", "ж", "з", "й", "к", "л", "м", "н", "п", "р", "с", "т", "ф", "х", "ц", "ч", "ш", "щ" , "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z"]
+    list_of_vows = ["а", "о", "и", "е", "ё", "э", "ы", "у", "ю", "я", "a", "e", "i", "o", "u", "y"]
+    for letter in textt:
+        if letter in textt:
+            if letter in list_of_cons:
+                if letter in cons_in_text:
+                    None
+                else:
+                    cons_in_text.append(letter)
+            elif letter in list_of_vows:
+                if letter in vows_in_text:
+                    None
+                else:
+                    vows_in_text.append(letter)
+            elif letter == ("ь" or "ъ" or "Ъ" or "Ь"):
+                if letter in other_in_text:
+                    None
+                else:
+                    other_in_text.append(letter)
+        else:
+            None
+    bot.sendMessage(chat_id, "Согласные: " + str(sorted(cons_in_text)))
+    bot.sendMessage(chat_id, "Всего согласных: " + str(len(cons_in_text)))
+    bot.sendMessage(chat_id, "Гласные: " + str(sorted(vows_in_text)))
+    bot.sendMessage(chat_id, "Всего гласных: " + str(len(vows_in_text)))
+    if other_in_text != []:
+        bot.sendMessage(chat_id, "Остальные символы: " + str(sorted(other_in_text)))
+        bot.sendMessage(chat_id, "Всего ост.символов: " + str(len(other_in_text)))
+        
+bot.getUpdates()          
+update_id = 0
+
+while True:
+   updates = bot.getUpdates(offset=update_id+1)
+   for update in updates:
+        if update_id < update["update_id"]:
+            update_id = update["update_id"]
+            try:
+                reply(update["message"]["text"], update["message"]["chat"]["id"])
+                print(update["message"]["text"])
+            except:
+                print(update["message"]["text"])
